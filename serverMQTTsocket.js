@@ -12,8 +12,9 @@ const port = process.env.BROKERPORT;
 const protocol = process.env.BROKERPROTOCOL;
 const user = process.env.BROKERUSERNAME;
 const password = process.env.BROKERPASS;
-const mqttSubscriberProd = process.env.MQTTPRODUCAO
+const mqttSubscriberProd = process.env.MQTTPRODUCAO;
 const websocketPort = process.env.WEBSOCKETPORT;
+const hostFrontEnd = process.env.HOSTFRONTEND; // Pode não ser mais necessário
 
 // Configurar CORS para permitir todas as origens
 app.use(cors({
@@ -22,7 +23,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type'],
     credentials: true // Atenção: Usar com cuidado, pois permite o envio de cookies e headers de autenticação de qualquer origem
 }));
-
 
 // Servir o arquivo index.html
 app.get('/', (req, res) => {
@@ -43,15 +43,9 @@ const server = http.createServer(app);
 // Configurar o servidor Socket.IO
 const io = new Server(server, {
     cors: {
-        origin: function (origin, callback) {
-            if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
-        },
+        origin: '*', // Permite todas as origens
         methods: ['GET', 'POST'],
-        credentials: true
+        credentials: true // Atenção: Usar com cuidado, pois permite o envio de cookies e headers de autenticação de qualquer origem
     }
 });
 
@@ -74,7 +68,7 @@ const mqttOptions = {
 };
 
 server.listen(websocketPort, () => {
-    console.log('Server is listening');
+    console.log('Server is listening on port', websocketPort);
 
     const client = mqtt.connect(mqttOptions);
 
@@ -86,7 +80,6 @@ server.listen(websocketPort, () => {
 
         // Tópico Teste
         client.subscribe('TesteMQTT');
-
     });
 
     client.on('error', function (error) {
