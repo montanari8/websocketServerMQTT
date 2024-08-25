@@ -14,11 +14,12 @@ const user = process.env.BROKERUSERNAME;
 const password = process.env.BROKERPASS;
 const mqttSubscriberProd = process.env.MQTTPRODUCAO
 const websocketPort = process.env.WEBSOCKETPORT;
+const hostFrontEnd = process.env.HOSTFRONTEND;
 
 
 
 // Lista de origens permitidas
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001']; // Adicione suas origens aqui
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', hostFrontEnd]; // Adicione suas origens aqui
 
 // Configurar CORS no Express
 app.use(cors({
