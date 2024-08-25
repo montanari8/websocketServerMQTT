@@ -18,7 +18,7 @@ const hostFrontEnd = process.env.HOSTFRONTEND; // Pode não ser mais necessário
 
 // Configurar CORS para permitir todas as origens
 app.use(cors({
-    origin: '*', // Permite todas as origens
+    origin: hostFrontEnd, 
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true // Atenção: Usar com cuidado, pois permite o envio de cookies e headers de autenticação de qualquer origem
